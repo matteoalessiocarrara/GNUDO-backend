@@ -19,10 +19,12 @@
 
 // Header principale
 
-# include "managers.hpp"
-
 # ifndef GNUDO_ABSTRACT_GNUDO_HPP
 # define GNUDO_ABSTRACT_GNUDO_HPP
+
+
+# include "managers.hpp"
+
 
 namespace gnudo
 {
@@ -31,7 +33,7 @@ namespace gnudo
 		class Db
 		{
 			public:
-				virtual const TasksManager& getTasks() = 0;
+				virtual TasksManager* getTasks() = 0;
 		};
 	}
 }

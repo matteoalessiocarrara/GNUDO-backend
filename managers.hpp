@@ -19,28 +19,35 @@
 
 // Oggetti che gestiscono una lista di oggetti (in objects.hpp)
 
+# ifndef GNUDO_ABSTRACT_MANAGERS_HPP
+# define GNUDO_ABSTRACT_MANAGERS_HPP
+
+
 # include <vector>
 # include <string>
 
+# include <sqlite3.h>
+
 # include "objects.hpp"
-
-
-# ifndef GNUDO_ABSTRACT_MANAGERS_HPP
-# define GNUDO_ABSTRACT_MANAGERS_HPP
 
 
 namespace gnudo
 {
 	namespace abstract
 	{
+		using std::vector;
+		using std::string;
+		
 		class TasksManager
 		{
 			public:
-				virtual Task& add(const std::string title, const std::string desc) = 0;
-				virtual void remove(const Task &task) = 0;
-				virtual std::vector<Task*> getList() const = 0;
+				virtual sqlite3_int64 			add(const string title, const string desc) = 0;
+				virtual void 					remove(const Task* task) = 0;
+				virtual Task* 					getTask(const sqlite3_int64 id) = 0;
+				virtual vector<sqlite3_int64>	getIdList() const = 0;
 		};
 	}
 }
+
 
 # endif // ifndef GNUDO_ABSTRACT_MANAGERS_HPP

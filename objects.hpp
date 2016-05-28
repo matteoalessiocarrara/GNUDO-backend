@@ -19,30 +19,37 @@
 
 // Oggetti di base
 
+# ifndef GNUDO_ABSTRACT_OBJECTS_HPP
+# define GNUDO_ABSTRACT_OBJECTS_HPP
+
+
 # include <string>
 # include <ctime>
 
-
-# ifndef GNUDO_ABSTRACT_OBJECTS_HPP
-# define GNUDO_ABSTRACT_OBJECTS_HPP
 
 namespace gnudo
 {
 	namespace abstract
 	{
+		using std::string;
+		using std::time_t;
+		
+		
 		class Task
 		{
 			public:
-				virtual std::string getTitle() const = 0;
-				virtual void setTitle(const std::string title) = 0;
-				virtual std::string getDescription() const = 0;
-				virtual void setDescription(const std::string desc) = 0;
-				virtual std::time_t getCreationTime() const = 0;
-				virtual std::time_t getModificationTime() const = 0;
-				virtual bool isCompleted() const = 0;
-				virtual void setStatus(const bool isCompleted) = 0;
+				virtual string	getTitle() const = 0;
+				virtual string	getDescription() const = 0;
+				virtual time_t	getCreationTime() const = 0;
+				virtual time_t	getModificationTime() const = 0;
+				virtual bool	isCompleted() const = 0;
+	
+				virtual void 	setTitle(const string title) = 0;
+				virtual void	setDescription(const string description) = 0;
+				virtual void 	setStatus(const bool isCompleted) = 0;
 		};
 	}
 }
+
 
 # endif // ifndef GNUDO_ABSTRACT_OBJECTS_HPP
