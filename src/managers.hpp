@@ -41,7 +41,8 @@ namespace gnudo
 		class TasksManager
 		{
 			public:
-				virtual sqlite3_int64 			add(const string title, const string desc) = 0;
+                virtual sqlite3_int64 			add(const string title, const string description, const time_t creationTime,
+                                                    const time_t modificationTime, const bool completed) = 0;
 				virtual void 					remove(const Task* task) = 0;
 				virtual Task* 					getTask(const sqlite3_int64 id) = 0;
 				virtual vector<sqlite3_int64>	getIdList() const = 0;
