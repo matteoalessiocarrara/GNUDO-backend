@@ -38,14 +38,26 @@ namespace gnudo
 		using std::vector;
 		using std::string;
 		
+
 		class TasksManager
 		{
 			public:
+				
+				enum Order
+				{
+					TITLE = 0,
+					DESCRIPTION = 1,
+					CREATION_TIME = 2,
+					MODIFICATION_TIME = 3,
+					COMPLETED = 4
+				};
+				
                 virtual sqlite3_int64 			add(const string title, const string description, const time_t creationTime,
                                                     const time_t modificationTime, const bool completed) = 0;
 				virtual void 					remove(const Task* task) = 0;
 				virtual Task* 					getTask(const sqlite3_int64 id) = 0;
-				virtual vector<sqlite3_int64>	getIdList() const = 0;
+				// TODO Implementare funzione protected generica per l'ordinamento, non tutti i db hanno l'istruzione "ORDER BY"
+				virtual vector<sqlite3_int64>	getIdList(Order orderBy, bool asc) const = 0; 
 		};
 	}
 }
