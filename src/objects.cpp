@@ -17,27 +17,34 @@
  * MA 02110-1301, USA.
  */
 
-// Header principale
+# include "objects.hpp"
 
-# ifndef GNUDO_ABSTRACT_GNUDO_HPP
-# define GNUDO_ABSTRACT_GNUDO_HPP
+using namespace gnudo::abstract;
 
-
-# include "managers.hpp"
-
-
-namespace gnudo
+template <class P>
+Child<P>::Child(P *parent)
 {
-	namespace abstract
-	{
-		class Db
-		{
-			public:
-				virtual TasksManager*			getTasks() = 0;
-				virtual PriorityLevelsManager*	getPriorityLevels() = 0;
-		};
-	}
+	__parent = parent;
 }
 
+template <class P> P *
+Child<P>::getParent() const
+{
+	return __parent;
+}
 
-# endif // ifndef GNUDO_ABSTRACT_GNUDO_HPP
+template <class P>
+Object<P>::Object(P *parentManager): Child<P>(parentManager)
+{
+
+}
+
+Task::Task(TasksManager *parentManager): Object(parentManager)
+{
+
+}
+
+PriorityLevel::PriorityLevel(PriorityLevelsManager *parentManager): Object(parentManager)
+{
+
+}

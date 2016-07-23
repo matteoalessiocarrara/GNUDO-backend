@@ -1,2 +1,6 @@
 /build/
 *~
+/.kdev4/
+CMakeLists.txt.user
+/GNUDO-cpp-dbdriver-abstract.kdev4
+

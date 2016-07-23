@@ -17,27 +17,36 @@
  * MA 02110-1301, USA.
  */
 
-// Header principale
-
-# ifndef GNUDO_ABSTRACT_GNUDO_HPP
-# define GNUDO_ABSTRACT_GNUDO_HPP
-
-
+# include "gnudo.hpp"
 # include "managers.hpp"
 
 
-namespace gnudo
+using namespace gnudo::abstract;
+
+
+Manager::Manager(Db* parentDb): Child< gnudo::abstract::Db >(parentDb)
 {
-	namespace abstract
-	{
-		class Db
-		{
-			public:
-				virtual TasksManager*			getTasks() = 0;
-				virtual PriorityLevelsManager*	getPriorityLevels() = 0;
-		};
-	}
 }
 
+TasksManager::TasksManager(Db *parentDb): Manager(parentDb)
+{
 
-# endif // ifndef GNUDO_ABSTRACT_GNUDO_HPP
+}
+
+void
+PriorityLevelsManager::remove(const int64_t id, int64_t moveToPriority)
+{
+
+	vector<int64_t> tasks = gnudo::abstract::Manager::getParentDb()->getTasks()->getIdList(gnudo::abstract::TasksManager::Order::CREATION_TIME);
+
+	for(vector<int64_t>::iterator i = tasks.begin(); i != tasks.end(); i++)
+	{	Task *tmp = gnudo::abstract::Manager::getParentDb()->getTasks()->getTask(*i);
+
+		if (tmp->getPriorityLevel() == id)
+			tmp->setPriorityLevel(moveToPriority);
+
+		delete tmp;
+	}
+
+	gnudo::abstract::Manager::remove(id);
+}

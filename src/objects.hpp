@@ -33,22 +33,65 @@ namespace gnudo
 	{
 		using std::string;
 		using std::time_t;
+
+		class Manager;
+		class TasksManager;
+		class PriorityLevelsManager;
 		
 		
-		class Task
+		template <class P>
+		class Child
 		{
 			public:
+					Child(P *parent);
+				P	*getParent() const;
+			
+			private:
+				P	*__parent;
+		};
+		
+
+		template <class P>
+		class Object: private Child<P>
+		{
+			public:
+					Object(P *parentManager);
+				P	*getParentManager() const {return this->getParent();};
+		};
+
+
+		class Task: public Object<TasksManager>
+		{
+			public:
+								Task(TasksManager *parentManager);
 				virtual string	getTitle() const = 0;
 				virtual string	getDescription() const = 0;
+				virtual int		getPriorityLevel() const = 0;
 				virtual time_t	getCreationTime() const = 0;
 				virtual time_t	getModificationTime() const = 0;
 				virtual bool	isCompleted() const = 0;
 	
 				virtual void 	setTitle(const string title) = 0;
 				virtual void	setDescription(const string description) = 0;
-				virtual void 	setStatus(const bool isCompleted) = 0;
+				virtual void	setPriorityLevel(const int level) = 0;
                 virtual void    setCreationTime(const time_t time) = 0;
                 virtual void    setModificationTime(const time_t time) = 0;
+				virtual void 	setStatus(const bool isCompleted) = 0;
+		};
+		
+		
+		class PriorityLevel: public Object<PriorityLevelsManager>
+		{
+		public:
+					PriorityLevel(PriorityLevelsManager *parentManager);
+			
+			virtual string		getName() const = 0;
+			virtual int			getLevel() const = 0;
+			virtual string 		getColor() const = 0;
+			
+			virtual void		setName(const string name) = 0;
+			virtual void		setLevel(const int level) = 0;
+			virtual void		setColor(const string color) =0;
 		};
 	}
 }
