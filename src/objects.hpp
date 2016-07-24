@@ -93,7 +93,7 @@ namespace gnudo
 	
 				virtual void 	setTitle(const string title) = 0;
 				virtual void	setDescription(const string description) = 0;
-				virtual void	setPriorityLevel(const int level) = 0;
+				virtual void	setPriorityLevel(const int priorityId) = 0;
                 virtual void    setCreationTime(const time_t time) = 0;
                 virtual void    setModificationTime(const time_t time) = 0;
 				virtual void 	setStatus(const bool isCompleted) = 0;
