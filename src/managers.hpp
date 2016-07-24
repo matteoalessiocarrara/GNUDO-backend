@@ -79,7 +79,8 @@ namespace gnudo
 					CREATION_TIME = 2,
 					MODIFICATION_TIME = 3,
 					COMPLETED = 4,
-					PRIORITY = 5
+					PRIORITY = 5,
+					ID = 6
 				};
 				
 								TasksManager(Db *parentDb);
@@ -98,7 +99,8 @@ namespace gnudo
 				{
 					NAME = 0,
 					PRIORITY = 1,
-					COLOR = 2
+					COLOR = 2,
+					ID = 6
 				};
 								PriorityLevelsManager(Db *parentDb);
 				
