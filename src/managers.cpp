@@ -42,7 +42,7 @@ PriorityLevelsManager::remove(const int64_t id, int64_t moveToPriority)
 	for(vector<int64_t>::iterator i = tasks.begin(); i != tasks.end(); i++)
 	{	Task *tmp = gnudo::abstract::Manager::getParentDb()->getTasks()->getTask(*i);
 
-		if (tmp->getPriorityLevel() == id)
+		if (tmp->getPriorityLevel()->getId() == id)
 			tmp->setPriorityLevel(moveToPriority);
 
 		delete tmp;

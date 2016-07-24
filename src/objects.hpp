@@ -55,18 +55,38 @@ namespace gnudo
 		class Object: private Child<P>
 		{
 			public:
-					Object(P *parentManager);
-				P	*getParentManager() const {return this->getParent();};
+					Object(P *parentManager, int64_t id);
+				P	*getParentManager() const {return this->getParent();}
+				int64_t getId() const {return __id;}
+				
+			private:
+				const int64_t __id;
+			
 		};
 
-
+		
+		class PriorityLevel: public Object<PriorityLevelsManager>
+		{
+		public:
+			PriorityLevel(PriorityLevelsManager *parentManager, int64_t id);
+			
+			virtual string		getName() const = 0;
+			virtual int			getLevel() const = 0;
+			virtual string 		getColor() const = 0;
+			
+			virtual void		setName(const string name) = 0;
+			virtual void		setLevel(const int level) = 0;
+			virtual void		setColor(const string color) =0;
+		};
+		
+		
 		class Task: public Object<TasksManager>
 		{
 			public:
-								Task(TasksManager *parentManager);
+								Task(TasksManager *parentManager, int64_t id);
 				virtual string	getTitle() const = 0;
 				virtual string	getDescription() const = 0;
-				virtual int		getPriorityLevel() const = 0;
+				virtual PriorityLevel *getPriorityLevel() const = 0;
 				virtual time_t	getCreationTime() const = 0;
 				virtual time_t	getModificationTime() const = 0;
 				virtual bool	isCompleted() const = 0;
@@ -80,19 +100,7 @@ namespace gnudo
 		};
 		
 		
-		class PriorityLevel: public Object<PriorityLevelsManager>
-		{
-		public:
-					PriorityLevel(PriorityLevelsManager *parentManager);
-			
-			virtual string		getName() const = 0;
-			virtual int			getLevel() const = 0;
-			virtual string 		getColor() const = 0;
-			
-			virtual void		setName(const string name) = 0;
-			virtual void		setLevel(const int level) = 0;
-			virtual void		setColor(const string color) =0;
-		};
+
 	}
 }
 

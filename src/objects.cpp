@@ -34,17 +34,17 @@ Child<P>::getParent() const
 }
 
 template <class P>
-Object<P>::Object(P *parentManager): Child<P>(parentManager)
+Object<P>::Object(P *parentManager, int64_t id): Child<P>(parentManager), __id(id)
 {
 
 }
 
-Task::Task(TasksManager *parentManager): Object(parentManager)
+Task::Task(TasksManager *parentManager, int64_t id): Object(parentManager, id)
 {
 
 }
 
-PriorityLevel::PriorityLevel(PriorityLevelsManager *parentManager): Object(parentManager)
+PriorityLevel::PriorityLevel(PriorityLevelsManager *parentManager, int64_t id): Object(parentManager, id)
 {
 
 }
