@@ -24,15 +24,6 @@
 using namespace gnudo::abstract;
 
 
-Manager::Manager(Db* parentDb): Child< gnudo::abstract::Db >(parentDb)
-{
-}
-
-TasksManager::TasksManager(Db *parentDb): Manager(parentDb)
-{
-
-}
-
 void
 PriorityLevelsManager::remove(const int64_t id, int64_t moveToPriority)
 {

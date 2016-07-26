@@ -21,30 +21,3 @@
 
 using namespace gnudo::abstract;
 
-template <class P>
-Child<P>::Child(P *parent)
-{
-	__parent = parent;
-}
-
-template <class P> P *
-Child<P>::getParent() const
-{
-	return __parent;
-}
-
-template <class P>
-Object<P>::Object(P *parentManager, int64_t id): Child<P>(parentManager), __id(id)
-{
-
-}
-
-Task::Task(TasksManager *parentManager, int64_t id): Object(parentManager, id)
-{
-
-}
-
-PriorityLevel::PriorityLevel(PriorityLevelsManager *parentManager, int64_t id): Object(parentManager, id)
-{
-
-}

@@ -57,7 +57,7 @@ namespace gnudo
 		class Manager: private Child<Db>
 		{
 			public:				
-				Manager(Db *parentDb);
+				Manager(Db *parentDb): Child<Db>(parentDb){};
 				Db	*getParentDb() const {return getParent();};
 
 				// TODO Implementare funzione protected generica per l'ordinamento, non tutti i db hanno l'istruzione "ORDER BY"
@@ -83,7 +83,7 @@ namespace gnudo
 					ID = 6
 				};
 				
-								TasksManager(Db *parentDb);
+								TasksManager(Db *parentDb): Manager(parentDb){};
 				virtual int64_t	add(const int priorityId, const string title, const string description, const time_t creationTime,
 									const time_t modificationTime, const bool completed) = 0;
 				virtual Task* 	getTask(const int64_t id) const = 0;
@@ -102,7 +102,7 @@ namespace gnudo
 					COLOR = 2,
 					ID = 6
 				};
-								PriorityLevelsManager(Db *parentDb);
+								PriorityLevelsManager(Db *parentDb): Manager(parentDb){};
 				
 				// TODO cambiare priority in unsigned
 				virtual int64_t		 	add(const string name, const int priority, const string color) = 0; // TODO Possono esistere due con la stessa priorità?

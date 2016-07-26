@@ -43,8 +43,8 @@ namespace gnudo
 		class Child
 		{
 			public:
-					Child(P *parent);
-				P	*getParent() const;
+					Child(P *parent): __parent(parent){};
+				P	*getParent() const {return __parent;};
 			
 			private:
 				P	*__parent;
@@ -55,7 +55,7 @@ namespace gnudo
 		class Object: private Child<P>
 		{
 			public:
-					Object(P *parentManager, int64_t id);
+					Object(P *parentManager, int64_t id): Child<P>(parentManager), __id(id){};
 				P	*getParentManager() const {return this->getParent();}
 				int64_t getId() const {return __id;}
 				
@@ -68,7 +68,7 @@ namespace gnudo
 		class PriorityLevel: public Object<PriorityLevelsManager>
 		{
 		public:
-			PriorityLevel(PriorityLevelsManager *parentManager, int64_t id);
+			PriorityLevel(PriorityLevelsManager *parentManager, int64_t id): Object(parentManager, id){};
 			
 			virtual string		getName() const = 0;
 			virtual int			getLevel() const = 0;
@@ -83,7 +83,7 @@ namespace gnudo
 		class Task: public Object<TasksManager>
 		{
 			public:
-								Task(TasksManager *parentManager, int64_t id);
+								Task(TasksManager *parentManager, int64_t id): Object(parentManager, id){};
 				virtual string	getTitle() const = 0;
 				virtual string	getDescription() const = 0;
 				virtual PriorityLevel *getPriorityLevel() const = 0;
@@ -98,11 +98,13 @@ namespace gnudo
                 virtual void    setModificationTime(const time_t time) = 0;
 				virtual void 	setStatus(const bool isCompleted) = 0;
 		};
-		
-		
-
 	}
 }
+
+
+
+
+
 
 
 # endif // ifndef GNUDO_ABSTRACT_OBJECTS_HPP
