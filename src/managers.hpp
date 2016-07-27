@@ -107,7 +107,7 @@ namespace gnudo
 				// TODO cambiare priority in unsigned
 				virtual int64_t		 	add(const string name, const int priority, const string color) = 0; // TODO Possono esistere due con la stessa priorità?
 				virtual PriorityLevel*	getPriorityLevel(const int64_t id) const = 0;
-				void 			remove(const int64_t id, int64_t moveToPriority);
+				virtual void 			remove(const int64_t id, int64_t moveToPriority) = 0;
 		};
 	}
 }
