@@ -23,13 +23,13 @@
 # define GNUDO_ABSTRACT_MANAGERS_HPP
 
 
+# include <ctime>
 # include <vector>
 # include <string>
 # include <cstdint>
 # include <stdexcept>
 
-# include <sqlite3.h>
-
+# include "gnudo.hpp"
 # include "objects.hpp"
 
 
@@ -37,78 +37,149 @@ namespace gnudo
 {
 	namespace abstract
 	{
+		using std::time;
+		using std::time_t;
 		using std::vector;
 		using std::string;
 		using std::int64_t;
+		using std::size_t;
+		using std::to_string;
 		
-		class Db;
-
 
 		namespace exceptions
 		{
-			class ObjectNotFoundException: public std::runtime_error
+			class PriorityAlreadyExistingException: public std::runtime_error
 			{
 				public:
-					ObjectNotFoundException(const std::string& msg): std::runtime_error(msg){}
+					PriorityAlreadyExistingException(const std::string &msg): std::runtime_error(msg) {}
+			};
+
+			class CannotRemovePriorityException: public std::runtime_error
+			{
+				public:
+					CannotRemovePriorityException(const std::string &msg): std::runtime_error(msg) {}
+			};
+		
+			class PriorityNotFoundException: public std::runtime_error
+			{
+			public:
+				PriorityNotFoundException(const std::string &msg): std::runtime_error(msg) {}
+			};
+		}
+
+
+		namespace managers
+		{
+			using namespace objects;
+
+
+			// Gestisce una lista di oggetti
+			// Il parametro del template è il tipo di oggetto gestito
+			template <typename O>
+			class Manager: private Child<Db>
+			{
+				public:
+					// defaultListOrder e defualtListAscending verranno usati come parametri di getIdList in operator[]()
+					Manager(Db *parentDb, const int defaultListOrder, const bool defaultListAscending);
+					Db							*getParentDb() const;
+					vector<int64_t> 			getIdList();
+					
+					// TODO Implementare funzione generica per l'ordinamento, non tutti i db hanno l'istruzione "ORDER BY"
+					virtual vector<int64_t>		getIdList(const int orderBy, const bool ascending) const = 0;
+					virtual O					*getObject(const int64_t id) const = 0;
+					virtual void				remove(const int64_t id) = 0;
+
+					O 				*operator[](size_t index) const;
+
+				private:
+					int __defaultListOrder;
+					bool __defaultListAscending;
+			};
+
+
+			class TasksManager: public Manager<Task>
+			{
+				public:
+
+					// Ordinamento della lista dei task
+					enum Order
+					{
+					    TITLE = 0,
+					    DESCRIPTION = 1,
+					    CREATION_TIME = 2,
+					    MODIFICATION_TIME = 3,
+					    COMPLETED = 4,
+					    PRIORITY = 5,
+					    ID = 6
+					};
+
+					TasksManager(Db *parentDb): Manager<Task>(parentDb, Order::PRIORITY, false) {};
+					int64_t 			add(const int64_t priority, const string title = "Untitled", const string description = "", const time_t creationTime = time(NULL),
+											const time_t modificationTime = time(NULL), const bool isCompleted = false);
+					Task 				*getTask(const int64_t id) const {return getObject(id);}
+					
+				protected:
+					virtual int64_t		_add(const int64_t priority, const string title, const string description, const time_t creationTime,
+											const time_t modificationTime, const bool isCompleted) = 0;
+
+			};
+
+
+			class PriorityLevelsManager: public Manager<PriorityLevel>
+			{
+				public:
+
+					// Ordinamento della lista delle priorità
+					enum Order
+					{
+					    NAME = 0,
+					    PRIORITY = 1, // Priorità e id sono sinonimi
+					    COLOR = 2
+					};
+
+					PriorityLevelsManager(Db *parentDb): Manager<PriorityLevel>(parentDb, Order::PRIORITY, false) {};
+					int64_t 			add(const string name, const int64_t priority, const string color = "#00ff00");
+					PriorityLevel		*getPriorityLevel(const int64_t id) const {return getObject(id);};
+
+					// WARNING Questo metodo deve essere usato solo quando si è sicuri che non ci siano task dipendenti dal livello di priorità
+					void 				remove(const int64_t id);
+					void 				remove(const int64_t id, int64_t moveToPriority);
+
+				protected:
+					virtual int64_t		_add(const string name, const int64_t priority, const string color) = 0;
+					virtual void		_remove(const int64_t id) = 0;
 			};
 		}
 		
-
-		class Manager: private Child<Db>
-		{
-			public:				
-				Manager(Db *parentDb): Child<Db>(parentDb){};
-				Db	*getParentDb() const {return getParent();};
-
-				// TODO Implementare funzione protected generica per l'ordinamento, non tutti i db hanno l'istruzione "ORDER BY"
-				virtual vector<int64_t>	getIdList(int orderBy, bool ascending=false) const = 0;
-				virtual void			remove(const int64_t id) = 0;
-
-		};
-
-
-		class TasksManager: public Manager
-		{
-			public:
-				
-				// getIdList
-				enum Order
-				{
-					TITLE = 0,
-					DESCRIPTION = 1,
-					CREATION_TIME = 2,
-					MODIFICATION_TIME = 3,
-					COMPLETED = 4,
-					PRIORITY = 5,
-					ID = 6
-				};
-				
-								TasksManager(Db *parentDb): Manager(parentDb){};
-				virtual int64_t	add(const int priorityId, const string title, const string description, const time_t creationTime,
-									const time_t modificationTime, const bool completed) = 0;
-				virtual Task* 	getTask(const int64_t id) const = 0;
-		};
 		
+		// IMPLEMENTAZIONE
+
 		
-		class PriorityLevelsManager: public Manager
+		template <typename O>
+		managers::Manager<O>::Manager(Db *parentDb, const int defaultListOrder, const bool defaultListAscending): Child<Db>(parentDb)
 		{
-			public:
-				
-				// getIdList
-				enum Order
-				{
-					NAME = 0,
-					PRIORITY = 1,
-					COLOR = 2,
-					ID = 6
-				};
-								PriorityLevelsManager(Db *parentDb): Manager(parentDb){};
-				
-				// TODO cambiare priority in unsigned
-				virtual int64_t		 	add(const string name, const int priority, const string color) = 0; // TODO Possono esistere due con la stessa priorità?
-				virtual PriorityLevel*	getPriorityLevel(const int64_t id) const = 0;
-				virtual void 			remove(const int64_t id, int64_t moveToPriority) = 0;
-		};
+			__defaultListOrder = defaultListOrder;
+			__defaultListAscending = defaultListAscending;
+		}
+		
+		template <typename O> Db *							
+		managers::Manager<O>::getParentDb() const
+		{
+			return getParent();
+		}
+		
+		template <typename O> vector<int64_t> 
+		managers::Manager<O>::getIdList() 
+		{
+			return getIdList(__defaultListOrder, __defaultListAscending);	
+		}
+		
+		template <typename O> O *
+		managers::Manager<O>::operator[](size_t index) const
+		{
+			return getObject(getIdList(__defaultListOrder, __defaultListAscending)[index]);
+		}
+
 	}
 }
 

@@ -23,21 +23,27 @@
 # define GNUDO_ABSTRACT_GNUDO_HPP
 
 
-# include "managers.hpp"
-
 
 namespace gnudo
 {
 	namespace abstract
 	{
+		namespace managers
+		{
+			class TasksManager;
+			class PriorityLevelsManager;
+		}
+		
+		
 		class Db
 		{
 			public:
-				virtual TasksManager*			getTasks() = 0;
-				virtual PriorityLevelsManager*	getPriorityLevels() = 0;
+				virtual managers::TasksManager*				getTasks() = 0;
+				virtual managers::PriorityLevelsManager*	getPriorityLevels() = 0;
 		};
 	}
 }
 
 
 # endif // ifndef GNUDO_ABSTRACT_GNUDO_HPP
+

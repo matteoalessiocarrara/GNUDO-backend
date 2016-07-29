@@ -17,11 +17,76 @@
  * MA 02110-1301, USA.
  */
 
-# include "gnudo.hpp"
 # include "managers.hpp"
 
 
+using namespace gnudo::abstract::managers;
 using namespace gnudo::abstract;
+
+
+int64_t
+TasksManager::add(const int64_t priority, const string title, const string description, const time_t creationTime,
+							const time_t modificationTime, const bool isCompleted)
+{
+	bool priorityFound = false;
+	
+	for(const auto &pId: getParentDb()->getPriorityLevels()->getIdList())
+	{
+		if (pId == priority)
+		{
+			priorityFound = true;
+			break;
+		}
+	}
+	
+	if (not priorityFound)
+		throw exceptions::PriorityNotFoundException(to_string(priority));
+	
+	_add(priority, title, description, creationTime, modificationTime, isCompleted);
+}
+
+int64_t 
+PriorityLevelsManager::add(const string name, const int64_t priority, const string color)
+{
+	for(const auto & id : getIdList())
+		if(id == priority) throw exceptions::PriorityAlreadyExistingException(to_string(priority));
+		
+		return _add(name, priority, color);
+}
+
+void 
+PriorityLevelsManager::remove(const int64_t id)
+{
+	for(const auto & taskId : getParentDb()->getTasks()->getIdList())
+	{
+		Task *tmp = getParentDb()->getTasks()->getTask(taskId);
+		
+		if(tmp->getPriorityLevel()->getId() == id)
+			throw exceptions::CannotRemovePriorityException("Il task " + to_string(taskId) + " dipende da questa priorità (" +
+			to_string(id) + ")");
+		
+		delete tmp;
+	}
+	
+	_remove(id);
+}
+
+void 
+PriorityLevelsManager::remove(const int64_t id, int64_t moveToPriority)
+{
+	for(const auto & taskId : getParentDb()->getTasks()->getIdList())
+	{
+		Task *tmp = getParentDb()->getTasks()->getTask(taskId);
+		
+		if(tmp->getPriorityLevel()->getId() == id)
+			tmp->setPriorityLevel(moveToPriority);
+		
+		delete tmp;
+	}
+	
+	_remove(id);
+}
+
 
 
 
