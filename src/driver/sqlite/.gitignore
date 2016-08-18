@@ -1,9 +1,0 @@
-/build/
-a.out
-*.o
-*.gch
-*~
-CMakeLists.txt.user
-/.kdev4/
-/GNUDO-cpp-dbdriver-sqlite.kdev4
-

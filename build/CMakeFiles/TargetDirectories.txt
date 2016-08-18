@@ -1,0 +1,13 @@
+/home/richard/programming/dev/3-maint/public/GNUDO-backend/build/CMakeFiles/install.dir
+/home/richard/programming/dev/3-maint/public/GNUDO-backend/build/CMakeFiles/list_install_components.dir
+/home/richard/programming/dev/3-maint/public/GNUDO-backend/build/CMakeFiles/install/strip.dir
+/home/richard/programming/dev/3-maint/public/GNUDO-backend/build/CMakeFiles/install/local.dir
+/home/richard/programming/dev/3-maint/public/GNUDO-backend/build/CMakeFiles/rebuild_cache.dir
+/home/richard/programming/dev/3-maint/public/GNUDO-backend/build/CMakeFiles/edit_cache.dir
+/home/richard/programming/dev/3-maint/public/GNUDO-backend/build/src/CMakeFiles/install.dir
+/home/richard/programming/dev/3-maint/public/GNUDO-backend/build/src/CMakeFiles/list_install_components.dir
+/home/richard/programming/dev/3-maint/public/GNUDO-backend/build/src/CMakeFiles/rebuild_cache.dir
+/home/richard/programming/dev/3-maint/public/GNUDO-backend/build/src/CMakeFiles/gnudo-backend.dir
+/home/richard/programming/dev/3-maint/public/GNUDO-backend/build/src/CMakeFiles/install/strip.dir
+/home/richard/programming/dev/3-maint/public/GNUDO-backend/build/src/CMakeFiles/install/local.dir
+/home/richard/programming/dev/3-maint/public/GNUDO-backend/build/src/CMakeFiles/edit_cache.dir
