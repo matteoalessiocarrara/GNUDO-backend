@@ -20,10 +20,10 @@
 # include <iostream>
 # include <vector>
 
-# include "../gnudo.hpp"
+# include <gnudo-backend/gnudo.hpp>
 
 
-using namespace gnudo::sqlite;
+using namespace gnudo;
 using std::vector;
 using std::cout;
 using std::endl;
@@ -32,33 +32,6 @@ using std::endl;
 int main()
 {	
 	Db db("test.db");
-	
-	sqlite3_int64 id = db.getTasks()->add("Prova", "123 123");
-	Task* t = db.getTasks()->getTask(id);
-
-	t->setTitle("Questo task non esiste");
-	t->setDescription("Niente qui");
-	t->setStatus(true);
-
-	vector<sqlite3_int64> l = db.getTasks()->getIdList();
-	
-	for(vector<sqlite3_int64>::iterator i = l.begin(); i != l.end(); i++)
-	{
-		gnudo::sqlite::Task *t2 = db.getTasks()->getTask(*i);
-
-		cout << "**************************************************************" << endl;
-		cout << "Id: " << t2->getId() << endl;
-		cout << "Title: " << t2->getTitle() << endl;
-		cout << "Description: " << t2->getDescription() << endl;
-		cout << "Creation time: " << t2->getCreationTime() << endl;
-		cout << "Modification time: " << t2->getModificationTime() << endl;
-		cout << "Is completed: "<< t2->isCompleted() << endl;
-
-		delete t2;
-	}
-
-
-	db.getTasks()->remove(t);
 
 	return 0;
 }

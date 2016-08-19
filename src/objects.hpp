@@ -107,6 +107,45 @@ namespace gnudo
 				void 			setModificationTime(const time_t time);
 				void 			setStatus(const bool isCompleted);
 		};
+
+
+		// Implementazioni
+
+
+		template <class P>
+		Child<P>::Child(P *parent)
+		{
+			__parent = parent;
+		}
+
+
+		template <class P> P *
+		Child<P>::getParent() const
+		{
+			return __parent;
+		}
+
+
+		template <class P>
+		Object<P>::Object(P *parentManager, int64_t id): Child<P>(parentManager), __id(id)
+		{
+
+		}
+
+
+		template <class P> P *
+		Object<P>::getParentManager() const
+		{
+			return this->getParent();
+		}
+
+
+		template <class P> int64_t
+		Object<P>::getId() const
+		{
+			return __id;
+		}
+
 	}
 }
 
