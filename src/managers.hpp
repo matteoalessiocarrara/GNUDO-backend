@@ -85,9 +85,11 @@ namespace gnudo
 			public:
 				Manager(sqlite3 *sqlitedb, Db *parentDb, const string tableName, const string defaultOrderByColumn, const bool defaultListAscending=false);
 
-				Db					*getParentDb() const;
-				virtual O			getObject(const int64_t id) const = 0;
-				O					operator[](size_t index) const;
+				Db						*getParentDb() const;
+				virtual O				getObject(const int64_t id) const = 0;
+				vector<sqlite3_int64>	getIdList() const;
+				// FIXME non funziona nelle classi derivate (e forse neanche qui)
+				O						operator[](size_t index) const;
 
 			private:
 				const string		__defaultOrderByColumn;

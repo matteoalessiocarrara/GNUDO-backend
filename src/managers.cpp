@@ -65,10 +65,17 @@ Manager<O>::getParentDb() const
 }
 
 
+template <typename O> vector<sqlite3_int64>
+Manager<O>::getIdList() const
+{
+	return sqlite3pp::objects::Table::getIdList(__defaultOrderByColumn, __defaultListAscending);
+}
+
+
 template <typename O> O
 Manager<O>::operator[](size_t index) const
 {
-	return getObject(getIdList(__defaultOrderByColumn, __defaultListAscending)[index]);
+	return getObject(getIdList()[index]);
 }
 
 
