@@ -80,7 +80,7 @@ Db::__createTables()
 			"("
 			+ columns::prioritylevel::priority + " INTEGER PRIMARY KEY,"
 			+ columns::prioritylevel::name + "	TEXT NOT NULL,"
-			+ columns::prioritylevel::color + " TEXT NOT NULL,"
+			+ columns::prioritylevel::color + " TEXT NOT NULL"
 			");"
 
 			"CREATE TABLE  IF NOT EXISTS " + tables::tasks +
