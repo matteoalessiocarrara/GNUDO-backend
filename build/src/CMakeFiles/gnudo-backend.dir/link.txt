@@ -1,2 +1,0 @@
-/usr/bin/ar qc libgnudo-backend.a  CMakeFiles/gnudo-backend.dir/gnudo.cpp.o CMakeFiles/gnudo-backend.dir/managers.cpp.o CMakeFiles/gnudo-backend.dir/objects.cpp.o
-/usr/bin/ranlib libgnudo-backend.a
