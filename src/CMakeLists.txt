@@ -1,9 +1,8 @@
 cmake_minimum_required(VERSION 3.0)
 
-# So quello che faccio, statti zitto compilatore incapace
-add_compile_options(-std=c++11 -fpermissive -Wall -Wextra)
+add_compile_options(-std=c++11 -pipe -Wall -Wextra -Wshadow -pedantic)
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g")
-set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -g")
+set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O2 -march=native -fomit-frame-pointer")
 
 add_library(${PROJECT_NAME} STATIC gnudo.cpp managers.cpp objects.cpp)
 #add_executable(testlib test/test.cpp)

@@ -89,7 +89,7 @@ PriorityLevel::PriorityLevel(sqlite3* db, const int64_t id, PriorityLevelsManage
 string
 PriorityLevel::getName() const
 {
-	return (const char*)getColumn<const unsigned char*>(columns::prioritylevel::name, sqlite3pp_column_text, true);
+	return (const char*)getColumnString(columns::prioritylevel::name);
 }
 
 
@@ -103,7 +103,7 @@ PriorityLevel::getLevel() const
 string
 PriorityLevel::getColor() const
 {
-	return (const char*)getColumn<const unsigned char*>(columns::prioritylevel::color, sqlite3pp_column_text, true);
+	return (const char*)getColumnString(columns::prioritylevel::color);
 }
 
 
@@ -144,14 +144,14 @@ Task::Task(const int64_t id, sqlite3* db, TasksManager *parentManager):
 string
 Task::getTitle() const
 {
-	return (const char*)getColumn<const unsigned char*>(columns::task::title, sqlite3pp_column_text, true);
+	return (const char*)getColumnString(columns::task::title);
 }
 
 
 string
 Task::getDescription() const
 {
-	return (const char*)getColumn<const unsigned char*>(columns::task::description, sqlite3pp_column_text, true);
+	return (const char*)getColumnString(columns::task::description);
 }
 
 

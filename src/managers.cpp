@@ -51,10 +51,10 @@ using std::time;
 
 template <typename O>
 Manager<O>::Manager(sqlite3 *sqlitedb, Db *parentDb, const string tableName, const string defaultOrderByColumn, const bool defaultListAscending):
-	Child<Db>(parentDb), sqlite3pp::objects::Table(sqlitedb, tableName)
-{
-	__defaultOrderByColumn = defaultOrderByColumn;
-	__defaultListAscending = defaultListAscending;
+	Child<Db>(parentDb), sqlite3pp::objects::Table(sqlitedb, tableName),
+	__defaultOrderByColumn(defaultOrderByColumn), __defaultListAscending(defaultListAscending)
+{	
+
 }
 
 
@@ -122,7 +122,7 @@ TasksManager::getObject(const int64_t id) const
 	if (not isValidId(id))
 		throw TaskNotFoundException(to_string(id));
 
-	return Task(id, sqlite3pp::objects::Table::getParentDb(), this);
+	return Task(id, sqlite3pp::objects::Table::getParentDb(), (TasksManager*)this);
 }
 
 
@@ -178,7 +178,7 @@ PriorityLevelsManager::getObject(const int64_t id) const
 	if (not isValidId(id))
 		throw PriorityNotFoundException(to_string(id));
 	
-	return PriorityLevel(sqlite3pp::objects::Table::getParentDb(), id, this);
+	return PriorityLevel(sqlite3pp::objects::Table::getParentDb(), id, (PriorityLevelsManager*)this);
 }
 
 
