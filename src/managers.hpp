@@ -87,7 +87,8 @@ namespace gnudo
 
 				Db						*getParentDb() const;
 				virtual O				getObject(const int64_t id) const = 0;
-				vector<sqlite3_int64>	getIdList() const;
+				vector<int64_t>			getIdList(const string orderBy, const bool ascending=false) const;
+				vector<int64_t>			getIdList() const;
 				// FIXME non funziona nelle classi derivate (e forse neanche qui)
 				O						operator[](size_t index) const;
 
@@ -122,6 +123,47 @@ namespace gnudo
 				// essere modificati i task collegati
 				void 				remove(const int64_t id, int64_t moveToPriority);
 		};
+
+
+		// IMPLEMENTAZIONE
+
+
+		template <typename O>
+		Manager<O>::Manager(sqlite3 *sqlitedb, Db *parentDb, const string tableName, const string defaultOrderByColumn, const bool defaultListAscending):
+			Child<Db>(parentDb), sqlite3pp::objects::Table(sqlitedb, tableName),
+			__defaultOrderByColumn(defaultOrderByColumn), __defaultListAscending(defaultListAscending)
+		{
+
+		}
+
+
+		template <typename O> Db *
+		Manager<O>::getParentDb() const
+		{
+			return getParent();
+		}
+
+
+		template <typename O> vector<int64_t>
+		Manager<O>::getIdList(const string orderBy, const bool ascending) const
+		{
+			vector<sqlite3_int64> tmp = sqlite3pp::objects::Table::getIdList(orderBy, ascending);
+			return vector<int64_t>(tmp.begin(), tmp.end()); // Conversione sqlite3_int64 -> int64_t
+		}
+
+
+		template <typename O> vector<int64_t>
+		Manager<O>::getIdList() const
+		{
+			return getIdList(__defaultOrderByColumn, __defaultListAscending);
+		}
+
+
+		template <typename O> O
+		Manager<O>::operator[](size_t index) const
+		{
+			return getObject(getIdList()[index]);
+		}
 	}
 }
 

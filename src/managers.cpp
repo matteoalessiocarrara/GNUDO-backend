@@ -48,37 +48,6 @@ using std::strlen;
 using std::time;
 
 
-
-template <typename O>
-Manager<O>::Manager(sqlite3 *sqlitedb, Db *parentDb, const string tableName, const string defaultOrderByColumn, const bool defaultListAscending):
-	Child<Db>(parentDb), sqlite3pp::objects::Table(sqlitedb, tableName),
-	__defaultOrderByColumn(defaultOrderByColumn), __defaultListAscending(defaultListAscending)
-{	
-
-}
-
-
-template <typename O> Db *
-Manager<O>::getParentDb() const
-{
-	return getParent();
-}
-
-
-template <typename O> vector<sqlite3_int64>
-Manager<O>::getIdList() const
-{
-	return sqlite3pp::objects::Table::getIdList(__defaultOrderByColumn, __defaultListAscending);
-}
-
-
-template <typename O> O
-Manager<O>::operator[](size_t index) const
-{
-	return getObject(getIdList()[index]);
-}
-
-
 TasksManager::TasksManager(sqlite3 *db, Db *gnudoDb): Manager(db, gnudoDb, tables::tasks, columns::task::priority)
 {
 }
