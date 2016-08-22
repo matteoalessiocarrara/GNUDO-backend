@@ -1,4 +1,4 @@
-# Attenzione: lavori in corso
+# GNUDO-backend
 
 ## Per aggiornamenti
 
