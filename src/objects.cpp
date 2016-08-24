@@ -24,7 +24,7 @@
 # include <iostream>
 # include <stdexcept>
 
-# include <sqlite3pp.hpp>
+# include "../lib/sqlite3pp/src/sqlite3pp.hpp"
 
 # include "gnudo.hpp"
 # include "dbdefs.hpp"

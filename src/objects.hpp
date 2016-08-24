@@ -26,7 +26,7 @@
 # include <string>
 # include <ctime>
 
-# include <sqlite3pp.hpp>
+# include "../lib/sqlite3pp/src/sqlite3pp.hpp"
 
 
 namespace gnudo

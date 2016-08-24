@@ -20,7 +20,7 @@
 # include <string>
 # include <stdexcept>
 
-# include <sqlite3pp.hpp>
+# include "../lib/sqlite3pp/src/sqlite3pp.hpp"
 
 # include "dbdefs.hpp"
 # include "gnudo.hpp"
