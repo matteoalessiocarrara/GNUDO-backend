@@ -9,7 +9,7 @@ add_library(${PROJECT_NAME}-static STATIC gnudo.cpp managers.cpp objects.cpp)
 target_link_libraries(${PROJECT_NAME}-static sqlite3pp-static)
 
 add_executable(testlib test/test.cpp)
-target_link_libraries(testlib ${PROJECT_NAME})
+target_link_libraries(testlib ${PROJECT_NAME}-static)
 
 install(TARGETS ${PROJECT_NAME}-static DESTINATION lib)
 install(FILES dbdefs.hpp gnudo.hpp managers.hpp objects.hpp DESTINATION include/${PROJECT_NAME})

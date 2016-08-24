@@ -20,8 +20,8 @@
 # include <iostream>
 # include <vector>
 
-# include <gnudo-backend/dbdefs.hpp>
-# include <gnudo-backend/gnudo.hpp>
+# include "../dbdefs.hpp"
+# include "../gnudo.hpp"
 
 
 using namespace gnudo;
