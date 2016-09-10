@@ -21,6 +21,7 @@
 # include <string>
 # include <cstring>
 # include <cstdint>
+# include <sstream>
 # include <iostream>
 # include <stdexcept>
 
@@ -40,12 +41,21 @@ using namespace gnudo::objects;
 using namespace gnudo::dbdefs;
 using namespace gnudo;
 
-using std::to_string;
 using std::int64_t;
 using std::string;
 using std::vector;
 using std::strlen;
 using std::time;
+
+
+// Android
+template <typename T>
+std::string to_string(T value)
+{
+	std::ostringstream os ;
+	os << value ;
+	return os.str() ;
+}
 
 
 TasksManager::TasksManager(sqlite3 *db, Db *gnudoDb): Manager(db, gnudoDb, tables::tasks, columns::task::priority)
@@ -96,7 +106,7 @@ Task
 TasksManager::getObject(const int64_t id) const
 {
 	if (not isValidId(id))
-		throw TaskNotFoundException(to_string(id));
+		throw TaskNotFoundException(to_string<int64_t>(id));
 
 	return Task(id, sqlite3pp::objects::Table::getParentDb(), (TasksManager*)this);
 }
@@ -130,7 +140,7 @@ PriorityLevelsManager::add(const char *name, const int64_t priority, const char 
 	try
 	{
 		getObject(priority);
-		throw exceptions::PriorityAlreadyExistingException(to_string(priority));
+		throw exceptions::PriorityAlreadyExistingException(to_string<int64_t>(priority));
 	}
 	catch (exceptions::PriorityNotFoundException &e) // Ok
 	{
@@ -152,7 +162,7 @@ PriorityLevel
 PriorityLevelsManager::getObject(const int64_t id) const
 {
 	if (not isValidId(id))
-		throw PriorityNotFoundException(to_string(id));
+		throw PriorityNotFoundException(to_string<int64_t>(id));
 	
 	return PriorityLevel(sqlite3pp::objects::Table::getParentDb(), id, (PriorityLevelsManager*)this);
 }
