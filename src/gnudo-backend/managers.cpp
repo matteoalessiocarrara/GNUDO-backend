@@ -24,8 +24,8 @@
 # include <iostream>
 # include <stdexcept>
 
-# include "../lib/sqlite3pp/lib/sqlite3/src/sqlite3.h"
-# include "../lib/sqlite3pp/src/sqlite3pp.hpp"
+# include "../sqlite3pp/src/sqlite3/src/sqlite3.h"
+# include "../sqlite3pp/src/sqlite3pp/sqlite3pp.hpp"
 
 # include "gnudo.hpp"
 # include "dbdefs.hpp"
